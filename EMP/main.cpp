@@ -31,11 +31,15 @@ void createEmployee() {
     cin >> Position;
     cout << "Enter Employee mail:\t";
     cin >> mail_ID;
-    cout << "Enter Employee Phone Number:\t";
+    phonein:cout << "Enter Employee Phone Number:\t";
     cin >> Phone;
+    if (Phone.length()< 10||Phone.length()>10) {
+        cout << "Invalid Phone\n";
+       goto phonein;
+    }
     cout << "Enter the number of leaves left:\t";
     cin >> LeavesL;
-    cout << "Enter Employee's date of joining:\t";
+    dojin:cout << "Enter Employee's date of joining:\t";
     cin >> DOJ;
     cout << "Enter Employee's working hours :\t";
     cin >> hrs;
