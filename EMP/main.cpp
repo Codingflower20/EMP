@@ -6,6 +6,7 @@
 #include <cppconn/resultset.h>
 #include <mysqld_error.h>
 #include <sstream>
+#include<string>
 #include <C:\Program Files\MySQL\Connector C++ 1.1\include\cppconn\driver.h>
 using namespace std;
 void createEmployee() {
@@ -15,7 +16,7 @@ void createEmployee() {
     int age;
     string Position;
     string mail_ID;
-    int Phone;
+    string Phone;
     int LeavesL;
     int DOJ, hrs;
     double wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in;
@@ -31,16 +32,21 @@ void createEmployee() {
     cin >> Position;
     cout << "Enter Employee mail:\t";
     cin >> mail_ID;
-    phonein:cout << "Enter Employee Phone Number:\t";
+phonein:cout << "Enter Employee Phone Number:\t";
     cin >> Phone;
-    if (Phone.length()< 10||Phone.length()>10) {
+    if (Phone.length() < 10 || Phone.length() > 10) {
         cout << "Invalid Phone\n";
-       goto phonein;
+        goto phonein;
     }
     cout << "Enter the number of leaves left:\t";
     cin >> LeavesL;
-    dojin:cout << "Enter Employee's date of joining:\t";
+dojin:cout << "Enter Employee's date of joining:\t";
     cin >> DOJ;
+    string doj = to_string(DOJ);
+    if (doj.length() != 6) {
+        cout << "Invalid Date Of Joining\n";
+        goto dojin;
+    }
     cout << "Enter Employee's working hours :\t";
     cin >> hrs;
     cout << "Enter Employee's wages per hour:\t";
@@ -76,73 +82,48 @@ void createEmployee() {
     net = gross - tax;
     cout << "Gross Salary\tTax\tNet Salary\n";
     cout << gross << "\t" << tax << "\t" << net << endl;
-    MYSQL* conn;
-    MYSQL_RES* result;
-    MYSQL_ROW row;
 
-    const char* server = "localhost";
-    const char* user = "root";
-    const char* password = "";
-    const char* database = "empmanagement";
-
-    conn = mysql_init(NULL);
-
-    if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-        cerr << "Error connecting to database: " << mysql_error(conn) << endl;
+    MYSQL* conn; conn = mysql_init(NULL);
+    if (!mysql_real_connect(conn, "localhost", "root", "", "empmanagement", 3306, NULL, 0)) {
+        cout << "Error: " << mysql_error(conn) << endl;
     }
-    string insert = "INSERT INTO employee (`Emp_ID`, `Name`, `Department`, `Age`, `Position`, `Mail_ID`, `Phone`, `LeavesL`, `DOJ`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    MYSQL_STMT* stmt = mysql_stmt_init(conn);
-    if (!stmt) {
-        cerr << "Error creating prepared statement: " << mysql_stmt_error(stmt) << endl;
-        mysql_close(conn);
+    else {
+        cout << "logged in Databsse" << endl;
     }
-
-    MYSQL_BIND bind[9]; // Array to bind variables to placeholders
-
-    // Bind values to placeholders using appropriate data types
-    memset(bind, 0, sizeof(bind));
-
-    bind[0].buffer_type = MYSQL_TYPE_LONG;
-    bind[0].buffer = (void*)&emp_ID;
-    bind[0].buffer_length = sizeof(emp_ID);
-
-    bind[1].buffer_type = MYSQL_TYPE_STRING;
-    bind[1].buffer = (void*)Name.c_str();
-    bind[1].buffer_length = Name.length();
-
-    bind[2].buffer_type = MYSQL_TYPE_STRING;
-    bind[2].buffer = (void*)Department.c_str();
-    bind[2].buffer_length = Department.length();
-
-    bind[3].buffer_type = MYSQL_TYPE_LONG;
-    bind[3].buffer = (void*)&age;
-    bind[3].buffer_length = sizeof(age);
-
-    bind[4].buffer_type = MYSQL_TYPE_STRING;
-    bind[4].buffer = (void*)Position.c_str();
-    bind[4].buffer_length = Position.length();
-
-    bind[5].buffer_type = MYSQL_TYPE_STRING;
-    bind[5].buffer = (void*)mail_ID.c_str();
-    bind[5].buffer_length = mail_ID.length();
-
-    bind[6].buffer_type = MYSQL_TYPE_STRING;
-    bind[6].buffer = (void*)&Phone;
-    bind[6].buffer_length = sizeof(Phone);
-
-    bind[7].buffer_type = MYSQL_TYPE_LONG;
-    bind[7].buffer = (void*)&LeavesL;
-    bind[7].buffer_length = sizeof(LeavesL);
-
-    bind[8].buffer_type = MYSQL_TYPE_STRING;
-    bind[8].buffer = (void*)&DOJ;
-    bind[8].buffer_length = sizeof(DOJ);
-
-    if (mysql_stmt_bind_param(stmt, bind)) {
-        cerr << "Error binding parameters: " << mysql_stmt_error(stmt) << endl;
-        mysql_stmt_close(stmt);
-        mysql_close(conn);
+    string insertemp = "INSERT INTO `employee`(`Emp_ID`, `Name`, `Department`, `Age`, `Position`, `Mail_ID`, `Phone`, `LeavesL`, `DOJ`) VALUES (";
+    insertemp += "'" + emp_ID + "',";
+    insertemp += "'" + Name + "',";
+    insertemp += "'" + Department + "',";
+    insertemp += to_string(age) + ",";
+    insertemp += "'" + Position + "',";
+    insertemp += "'" + mail_ID + "',";
+    insertemp += "'" + Phone + "',";
+    insertemp += to_string(LeavesL) + ",";
+    insertemp += to_string(DOJ) + ");";
+    //string insert = "INSERT INTO users (Name, Phone, Email, User_ID, Passkey) VALUES ('" + Name + "',"< Phone1 >",'" + Email + "','" + User_ID + "','" + Passkey + "')";
+    if (mysql_query(conn, insertemp.c_str())) {
+        cout << "Error: " << mysql_error(conn) << endl;
+    }
+    else {
+        cout << "Inserted Successfuly!" << endl;
+    }
+    string insertsal = "INSERT INTO `salary`(`emp_ID`, `wph`, `hra`, `da`, `bonus`, `nps`, `ins`, `sav`, `gross`, `tax`, `net`) VALUES (";
+    insertsal += "'" + emp_ID + "',";
+    insertsal += to_string(wph) + ",";
+    insertsal += to_string(hra) + ",";
+    insertsal += to_string(da) + ",";
+    insertsal += to_string(bonus) + ",";
+    insertsal += to_string(nps) + ",";
+    insertsal += to_string(ins) + ",";
+    insertsal += to_string(sav) + ",";
+    insertsal += to_string(gross) + ",";
+    insertsal += to_string(tax) + ",";
+    insertsal += to_string(net) + ");";
+    if (mysql_query(conn, insertsal.c_str())) {
+        cout << "Error: " << mysql_error(conn) << endl;
+    }
+    else {
+        cout << "Inserted Successfuly!" << endl;
     }
 }
 
@@ -154,8 +135,8 @@ int main() {
 
     // Connect to the database
     driver = sql::mysql::get_mysql_driver_instance();
-    con = driver->connect("localhost", "root", ""); 
-    con->setSchema("Empmanagement");  
+    con = driver->connect("localhost", "root", "");
+    con->setSchema("Empmanagement");
     std::string us, password;
 
     /*std::cout << "Do you want to sign up (s) or log in (l)? ";
@@ -186,25 +167,26 @@ int main() {
     cout << "Enter password:\t";
     cin >> password;
 
-        if (us=="admin"&&password=="admin123") {
+    if (us == "admin" && password == "admin123") {
 
-            std::cout << "Login successful!" << std::endl;
-            char c;
-           choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data D to delete empolyee from database:\t";
-            switch (c)
-            {
-            case 'C':   createEmployee(); break;
+        std::cout << "Login successful!" << std::endl;
+        char c;
+    choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data\n D to delete empolyee from database:\t";
+        cin >> c;
+        switch (c)
+        {
+        case 'C':   createEmployee(); break;
             //case 'R':   readEmployee(); break;
             //case 'U':   updateEmployee(); break;
             //case 'D':   deleteEmployee(); break;
-            default:
-                cout << "Wrong choice try again\n";
-                goto choice;
-                break;
-            }
+        default:
+            cout << "Wrong choice try again\n";
+            goto choice;
+            break;
         }
-        else {
-            std::cout << "Login failed. Invalid credentials." << std::endl;
-        }
-        return 0;
     }
+    else {
+        std::cout << "Login failed. Invalid credentials." << std::endl;
+    }
+    return 0;
+}
