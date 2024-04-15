@@ -9,6 +9,77 @@
 #include<string>
 #include <C:\Program Files\MySQL\Connector C++ 1.1\include\cppconn\driver.h>
 using namespace std;
+class employee {
+    //DataMembers
+    string emp_ID;
+    string Name;
+    string Department;
+    int age;
+    string Position;
+    string mail_ID;
+    string Phone;
+    int LeavesL;
+    int DOJ;
+public:
+    employee() {}
+    void setData(string emp_IDc,string Namec,string Departmentc, int agec,string Positionc,string mail_IDc,string Phonec,int LeavesLc,int DOJc) {
+        Name = Namec;
+        Phone = Phonec;
+        mail_ID = mail_IDc;
+        emp_ID=emp_IDc ;
+        Department = Departmentc;
+        age =agec;
+        Position = Positionc;
+        LeavesL = LeavesLc;
+        DOJ = DOJc;
+       
+    }
+    string getData(char ch) {
+        switch (ch) {
+        case 'b':return Name;
+        case 'a':return emp_ID;
+        case 'c':return Department;
+        case 'd':return to_string(age);
+        case 'e':return Position;
+        case 'f':return mail_ID;
+        case 'g':return Phone;
+        case 'h':return to_string(LeavesL);
+        case 'i':return to_string(DOJ);
+        default:return "-1";
+        }
+    }
+};
+class Salary {
+    double wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in;
+    int hrs;
+public:
+    Salary(){
+        wph = 0; hra = 0; da = 0;  bonus = 0; nps = 0; inf = 0; ins = 0; sav = 0; gross = 0; tax = 0; net = 0; in = 0;
+        hrs = 0;
+    }
+    void setData(int hrsc, double wphc, double hrac, double dac, double bonusc, double npsc, double infc, double  insc, double savc, double grossc, double taxc, double netc, double inc) {
+        hrs = hrsc;
+        wph = wphc;
+        hra = hrac;
+        da = dac;
+        nps = npsc;
+        inf = infc;
+        ins = insc;
+        sav = savc;
+        gross = grossc;
+        tax = taxc;
+        net = netc;
+        in = inc;
+    }
+    double getData(int ch) {
+        switch (ch) {
+        case 1:return wph;
+        case 2:return hra;
+        case 3:return da;
+        default:return 0;
+        }
+    }
+};
 void createEmployee() {
     string emp_ID;
     string Name;
@@ -118,7 +189,8 @@ dojin:cout << "Enter Employee's date of joining:\t";
     insertsal += to_string(sav) + ",";
     insertsal += to_string(gross) + ",";
     insertsal += to_string(tax) + ",";
-    insertsal += to_string(net) + ");";
+    insertsal += to_string(net) + ",";
+    insertsal += to_string(hrs) + ");";
     if (mysql_query(conn, insertsal.c_str())) {
         cout << "Error: " << mysql_error(conn) << endl;
     }
