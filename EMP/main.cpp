@@ -76,6 +76,14 @@ public:
         case 1:return wph;
         case 2:return hra;
         case 3:return da;
+        case 4:return nps;
+        case 5:return inf;
+        case 6:return ins;
+        case 7:return sav;
+        case 8:return gross;
+        case 9:return tax;
+        case 10:return net;
+        case 11: return in;
         default:return 0;
         }
     }
@@ -198,7 +206,74 @@ dojin:cout << "Enter Employee's date of joining:\t";
         cout << "Inserted Successfuly!" << endl;
     }
 }
+void readEmployee() {
+    
+    employee e;
+    Salary s;
+    string emp_ID;
+    string Name;
+    string Department;
+    int age;
+    string Position;
+    string mail_ID;
+    string Phone;
+    int LeavesL;
+    int DOJ;
+    int logCounter = 0;
+    double wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in;
+    int hrs;
+    cout << "Enter the Employee ID:\t";
+    cin >> emp_ID;
+    sql::mysql::MySQL_Driver* driver;
+    sql::Connection* con;
+    sql::Statement* stmt;
+    sql::ResultSet* res;
+    // Connect to the database
+    driver = sql::mysql::get_mysql_driver_instance();
+    con = driver->connect("localhost", "root", "");
+    con->setSchema("Empmanagement");
+    // Execute a query to retrieve all data from the 'users' table
+    stmt = con->createStatement();
+    res = stmt->executeQuery("SELECT * FROM users WHERE emp_ID='" + emp_ID + "'");
+    // Iterate over the result set and print the data
+    while (res->next()) {
+        
+            Name = res->getString("Name");
+            Department = res->getString("Department");
+            Phone = res->getString("Phone");
+            mail_ID = res->getString("mail_ID");
+            Position= res->getString("Position");
+            LeavesL= res->getInt("LeavesL");
+            DOJ= res->getInt("DOJ");
+            age= res->getInt("age");
+            //std::cout << "Login successful!" << std::endl;
+            logCounter++;
+            wph= res->getDouble("wph");
+            hra= res->getDouble("hra");
+            da= res->getDouble("da");
+            bonus= res->getDouble("bonus");
+            nps= res->getDouble("nps");
+            inf= res->getDouble("inf");
+            ins= res->getDouble("ins");
+            sav= res->getDouble("sav");
+            gross= res->getDouble("gross");
+            tax= res->getDouble("tax");
+            net= res->getDouble("net");
+            in= res->getDouble("in");
+            hrs= res->getDouble("hrs");
+            e.setData(emp_ID,Name,Department,age,Position,mail_ID,Phone,LeavesL,DOJ);
+            s.setData( hrs, wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in);
 
+            
+    }
+    if (logCounter < 0) {
+        std::cout << "No such employee exists" << std::endl;
+    }
+
+    delete res;
+    delete stmt;
+    delete con;
+}
 int main() {
     sql::mysql::MySQL_Driver* driver;
     sql::Connection* con;
@@ -248,7 +323,7 @@ int main() {
         switch (c)
         {
         case 'C':   createEmployee(); break;
-            //case 'R':   readEmployee(); break;
+            case 'R':   readEmployee(); break;
             //case 'U':   updateEmployee(); break;
             //case 'D':   deleteEmployee(); break;
         default:
