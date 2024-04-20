@@ -529,7 +529,7 @@ int main() {
 
         std::cout << "Login successful!" << std::endl;
         char c;
-    choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data\n D to delete empolyee from database:\t";
+    choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data\n D to delete empolyee from database\n E to exit\t";
         cin >> c;
         switch (c)
         {
@@ -537,6 +537,7 @@ int main() {
             case 'R':   readEmployee('n'); break;
             case 'U':   readEmployee('Y'); break;
             case 'D':   readEmployee('D'); break;
+             case 'E': break;
         default:
             cout << "Wrong choice try again\n";
             goto choice;
