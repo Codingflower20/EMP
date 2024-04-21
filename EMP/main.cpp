@@ -545,7 +545,7 @@ int main() {
             case 'D':   readEmployee('D'); 
                          goto choice;
                          break;
-             //case 'E': break;
+             case 'E': break;
         default:
             cout << "Wrong choice try again\n";
             goto choice;
