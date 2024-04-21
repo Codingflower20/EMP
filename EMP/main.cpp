@@ -520,6 +520,7 @@ int main() {
 
     std::string us, password;
 
+    login: 
     cout << "Enter User name:\t";
     cin >> us;
     cout << "Enter password:\t";
@@ -554,6 +555,7 @@ int main() {
     }
     else {
         std::cout << "Login failed. Invalid credentials." << std::endl;
+        goto login;
     }
     return 0;
 }
