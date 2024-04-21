@@ -527,17 +527,25 @@ int main() {
 
     if (us == "admin" && password == "admin123") {
 
-        std::cout << "Login successful!" << std::endl;
+       std::cout << "Login successful!" << std::endl;
         char c;
     choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data\n D to delete empolyee from database\n E to exit\t";
         cin >> c;
         switch (c)
         {
-            case 'C':   createEmployee(); break;
-            case 'R':   readEmployee('n'); break;
-            case 'U':   readEmployee('Y'); break;
-            case 'D':   readEmployee('D'); break;
-             case 'E': break;
+            case 'C':   createEmployee(); 
+                        goto choice;
+                        break;
+            case 'R':   readEmployee('n'); 
+                        goto choice;
+                        break;
+            case 'U':   readEmployee('Y'); 
+                        goto choice;
+                        break;
+            case 'D':   readEmployee('D'); 
+                         goto choice;
+                         break;
+             //case 'E': break;
         default:
             cout << "Wrong choice try again\n";
             goto choice;
