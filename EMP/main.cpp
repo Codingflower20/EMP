@@ -15,35 +15,35 @@ class employee {
     string emp_ID;
     string Name;
     string Department;
-    int age=0;
+    int age = 0;
     string Position;
     string mail_ID;
     string Phone;
-    int LeavesL=0;
-    int DOJ=0;
+    int LeavesL = 0;
+    int DOJ = 0;
 public:
     employee() {
-        emp_ID="";
-        Name="";
-        Department="";
+        emp_ID = "";
+        Name = "";
+        Department = "";
         age = 0;
-        Position="";
-        mail_ID="";
-        Phone="";
+        Position = "";
+        mail_ID = "";
+        Phone = "";
         LeavesL = 0;
-         DOJ = 0;
+        DOJ = 0;
     }
-    void setData(string emp_IDc,string Namec,string Departmentc, int agec,string Positionc,string mail_IDc,string Phonec,int LeavesLc,int DOJc) {
+    void setData(string emp_IDc, string Namec, string Departmentc, int agec, string Positionc, string mail_IDc, string Phonec, int LeavesLc, int DOJc) {
         Name = Namec;
         Phone = Phonec;
         mail_ID = mail_IDc;
-        emp_ID=emp_IDc ;
+        emp_ID = emp_IDc;
         Department = Departmentc;
-        age =agec;
+        age = agec;
         Position = Positionc;
         LeavesL = LeavesLc;
         DOJ = DOJc;
-       
+
     }
     string getData(char ch) {
         switch (ch) {
@@ -64,7 +64,7 @@ class Salary {
     double wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in;
     int hrs;
 public:
-    Salary(){
+    Salary() {
         wph = 0; hra = 0; da = 0;  bonus = 0; nps = 0; inf = 0; ins = 0; sav = 0; gross = 0; tax = 0; net = 0; in = 0;
         hrs = 0;
     }
@@ -103,8 +103,8 @@ public:
 void updateEmp(employee& e, Salary& s) {
     char ch;
     string u, user = e.getData('a'), insertemp;
-    int wph=s.getData(1), LeavesL=stoi(e.getData('H'));
-    double tax=s.getData(9), gross=s.getData(8), net=s.getData(10), hra=s.getData(2), da=s.getData(3), nps=s.getData(4), ins=s.getData(6), bonus, inf = 5 , in, sav=s.getData(7), hrs=s.getData(12);
+    int wph = s.getData(1), LeavesL = stoi(e.getData('H'));
+    double tax = s.getData(9), gross = s.getData(8), net = s.getData(10), hra = s.getData(2), da = s.getData(3), nps = s.getData(4), ins = s.getData(6), bonus, inf = 5, in, sav = s.getData(7), hrs = s.getData(12);
     MYSQL* conn; conn = mysql_init(NULL);
     if (!mysql_real_connect(conn, "localhost", "root", "", "empmanagement", 3306, NULL, 0)) {
         cout << "Error: " << mysql_error(conn) << endl;
@@ -120,14 +120,14 @@ void updateEmp(employee& e, Salary& s) {
         case'A':
             cout << "Enter The New Position:\t";
             cin >> u;
-            
-             insertemp = "UPDATE employee SET Position = '"+u+"' WHERE Emp_ID= '"+user+"' ";
+
+            insertemp = "UPDATE employee SET Position = '" + u + "' WHERE Emp_ID= '" + user + "' ";
             if (mysql_query(conn, insertemp.c_str())) {
                 cout << "Error: " << mysql_error(conn) << endl;
             }
             else {
                 cout << "Updated Successfuly!" << endl;
-            } 
+            }
             break;
         case'B':
             cout << "Enter The New Email Id:\t";
@@ -232,8 +232,8 @@ void updateEmp(employee& e, Salary& s) {
         case'J':
             cout << "Enter The New Savings:\t";
             cin >> u;
-            sav== stod(u);
-            insertemp = "UPDATE salary SET sav = " +u + "WHERE Emp_ID = '" + user + "' ";
+            sav == stod(u);
+            insertemp = "UPDATE salary SET sav = " + u + "WHERE Emp_ID = '" + user + "' ";
             if (mysql_query(conn, insertemp.c_str())) {
                 cout << "Error: " << mysql_error(conn) << endl;
             }
@@ -258,14 +258,14 @@ void updateEmp(employee& e, Salary& s) {
         else
             tax = gross * 0.2;
         net = gross - tax;
-        insertemp = "DELETE FROM salary WHERE `salary`.`emp_ID` = '"+user+"'";
+        insertemp = "DELETE FROM salary WHERE `salary`.`emp_ID` = '" + user + "'";
         if (mysql_query(conn, insertemp.c_str())) {
             cout << "Error: " << mysql_error(conn) << endl;
         }
         else {
             cout << "Updating other fields!" << endl;
         }
-        string insertsal = "INSERT INTO `salary`(`emp_ID`, `wph`, `hra`, `da`, `bonus`, `nps`, `ins`, `sav`, `gross`, `tax`, `net`) VALUES (";
+        string insertsal = "INSERT INTO `salary`(`emp_ID`, `wph`, `hra`, `da`, `bonus`, `nps`, `ins`, `sav`, `gross`, `tax`, `net`,`hrs`) VALUES (";
         insertsal += "'" + user + "',";
         insertsal += to_string(wph) + ",";
         insertsal += to_string(hra) + ",";
@@ -385,7 +385,7 @@ dojin:cout << "Enter Employee's date of joining:\t";
     else {
         cout << "Inserted Successfuly!" << endl;
     }
-    string insertsal = "INSERT INTO `salary`(`emp_ID`, `wph`, `hra`, `da`, `bonus`, `nps`, `ins`, `sav`, `gross`, `tax`, `net`) VALUES (";
+    string insertsal = "INSERT INTO `salary`(`emp_ID`, `wph`, `hra`, `da`, `bonus`, `nps`, `ins`, `sav`, `gross`, `tax`, `net`,`hrs`) VALUES (";
     insertsal += "'" + emp_ID + "',";
     insertsal += to_string(wph) + ",";
     insertsal += to_string(hra) + ",";
@@ -421,22 +421,22 @@ void show(employee& e, Salary& s) {
     cout << "Dearness Allowance:\t" << s.getData(3) << endl;
     //cout << "Total Income:\t" << s.getData(11) << endl;
     cout << "Contribution To NPS:\t" << s.getData(4) << endl;
-   // cout << ":\t" << s.getData(5);
+    // cout << ":\t" << s.getData(5);
     cout << "general insurance premium:\t" << s.getData(6) << endl;
     cout << "Savings:\t" << s.getData(7) << endl;
     cout << "Gross Salary:\t" << s.getData(8) << endl;
     cout << "Tax:\t" << s.getData(9) << endl;
     cout << "Net Salary:\t" << s.getData(10) << endl;
-    
+
 }
 void readEmployee(char update) {
-    
+
     employee e;
     Salary s;
     string emp_ID;
     int logCounter = 0;
-    double wph=0.0, hra=0, da=0, bonus=0, nps=0, inf=0, ins=0, sav=0, gross=0, tax=0, net=0, in=0;
-    int hrs=0;
+    double wph = 0.0, hra = 0, da = 0, bonus = 0, nps = 0, inf = 0, ins = 0, sav = 0, gross = 0, tax = 0, net = 0, in = 0;
+    int hrs = 0;
     cout << "Enter the Employee ID:\t";
     cin >> emp_ID;
     sql::mysql::MySQL_Driver* driver;
@@ -457,32 +457,32 @@ void readEmployee(char update) {
         //std::cout << "Login successful!" << std::endl;
         logCounter++;
     }
-    
+
     res = stmt->executeQuery("SELECT * FROM salary WHERE emp_ID='" + emp_ID + "'");
     // Iterate over the result set and print the data
     while (res->next()) {
-            wph= res->getDouble("wph");
-            hra= res->getDouble("hra");
-            da= res->getDouble("da");
-            bonus= res->getDouble("bonus");
-            nps= res->getDouble("nps");
-            //inf= res->getDouble("inf");
-            ins= res->getDouble("ins");
-            sav= res->getDouble("sav");
-            gross= res->getDouble("gross");
-            tax= res->getDouble("tax");
-            net= res->getDouble("net");
-           // in= res->getDouble("in");
-            hrs = res->getInt("hrs");
+        wph = res->getDouble("wph");
+        hra = res->getDouble("hra");
+        da = res->getDouble("da");
+        bonus = res->getDouble("bonus");
+        nps = res->getDouble("nps");
+        //inf= res->getDouble("inf");
+        ins = res->getDouble("ins");
+        sav = res->getDouble("sav");
+        gross = res->getDouble("gross");
+        tax = res->getDouble("tax");
+        net = res->getDouble("net");
+        // in= res->getDouble("in");
+        hrs = res->getInt("hrs");
     }
     if (logCounter < 0) {
         std::cout << "No such employee exists " << std::endl;
         exit(0);
     }
-    
+
     s.setData(hrs, wph, hra, da, bonus, nps, inf, ins, sav, gross, tax, net, in);
     show(e, s);
-    
+
     if (update == 'Y') {
         updateEmp(e, s);
     }
@@ -503,7 +503,7 @@ void readEmployee(char update) {
         else {
             cout << "Data deleted Successfuly!" << endl;
         }
-         insert = "DELETE FROM salary WHERE `salary`.`Emp_ID` ='" + emp_ID + "' ";
+        insert = "DELETE FROM salary WHERE `salary`.`Emp_ID` ='" + emp_ID + "' ";
         if (mysql_query(conn, insert.c_str())) {
             cout << "Error: " << mysql_error(conn) << endl;
         }
@@ -517,7 +517,7 @@ void readEmployee(char update) {
     delete con;
 }
 int main() {
-    
+
     std::string us, password;
 
     cout << "Enter User name:\t";
@@ -527,25 +527,25 @@ int main() {
 
     if (us == "admin" && password == "admin123") {
 
-       std::cout << "Login successful!" << std::endl;
+        std::cout << "Login successful!" << std::endl;
         char c;
     choice: cout << "Enter \n C for adding new employee\n R for reading employee data\n U for updating employee data\n D to delete empolyee from database\n E to exit\t";
         cin >> c;
         switch (c)
         {
-            case 'C':   createEmployee(); 
-                        goto choice;
-                        break;
-            case 'R':   readEmployee('n'); 
-                        goto choice;
-                        break;
-            case 'U':   readEmployee('Y'); 
-                        goto choice;
-                        break;
-            case 'D':   readEmployee('D'); 
-                         goto choice;
-                         break;
-             case 'E': break;
+        case 'C':   createEmployee();
+            goto choice;
+            break;
+        case 'R':   readEmployee('n');
+            goto choice;
+            break;
+        case 'U':   readEmployee('Y');
+            goto choice;
+            break;
+        case 'D':   readEmployee('D');
+            goto choice;
+            break;
+        case 'E': break;
         default:
             cout << "Wrong choice try again\n";
             goto choice;
